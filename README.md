@@ -7,7 +7,11 @@ Minimal bootstrapping script for downloading and extracting a root tarball
 
 ## Usage
 
-To bootstrap a system with this, put the `ducktape` binary on the system and run `./ducktape https://example.org/root.tar.bz2`
+To bootstrap a system using ducktape, do the following:
+
+1. Put the `ducktape` binary on the system
+2. Put a `.cert` file in the same directory as the binary
+3. Run `./ducktape https://example.org/root.tar.bz2`
 
 It supports uncompressed, gzipped, and bzipped archives.
 
@@ -17,6 +21,7 @@ To use this for a Docker container, start your Dockerfile with the following:
 FROM scratch
 MAINTAINER {you}
 ADD ducktape /.ducktape
+ADD cert /.cert
 RUN ["/.ducktape", "https://example.org/path/to/root.tar.bz2"]
 ```
 
