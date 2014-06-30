@@ -4,13 +4,13 @@ MUSL_VERSION="1.1.3"
 .PHONY : container setup build install local
 
 container:
-	docker build -t ducktape .
+	docker build --no-cache -t ducktape .
 	docker run --rm -t -i -v $(DIR):/opt/ducktape ducktape
 
 musl:
-	rm -rf musl-$(MUSL_VERSION).tar.gz musl-$(MUSL_VERSION)
-	wget http://www.musl-libc.org/releases/musl-$(MUSL_VERSION).tar.gz
-	tar xf musl-$(MUSL_VERSION).tar.gz
+	rm -rf musl.tar.gz musl-$(MUSL_VERSION)
+	curl -o musl.tar.gz http://www.musl-libc.org/releases/musl-$(MUSL_VERSION).tar.gz
+	tar xf musl.tar.gz
 	cd musl-$(MUSL_VERSION) ; CFLAGS=-fno-toplevel-reorder ./configure
 	$(MAKE) -C musl-$(MUSL_VERSION) install
 
