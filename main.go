@@ -36,4 +36,5 @@ func main() {
     if err != nil {
         fmt.Printf("Failed to extract -- %s\n", err)
     }
+    fmt.Println("Successfully extracted archive")
 }
