@@ -1,2 +1,4 @@
 gopath
 musl*
+build
+.github
