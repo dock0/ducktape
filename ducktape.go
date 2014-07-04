@@ -19,8 +19,8 @@ func usage() {
 }
 
 func version() {
-    fmt.Println(VERSION)
-    os.Exit(0)
+	fmt.Println(VERSION)
+	os.Exit(0)
 }
 
 func tls_config() *tls.Config {
@@ -50,9 +50,9 @@ func main() {
 	if len(os.Args) < 2 {
 		usage()
 	}
-    if os.Args[1] == "-v" {
-        version()
-    }
+	if os.Args[1] == "-v" {
+		version()
+	}
 	err := archive.Untar(download(os.Args[1]), "/", nil)
 	if err != nil {
 		fmt.Printf("Failed to extract -- %s\n", err)
