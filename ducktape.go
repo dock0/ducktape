@@ -1,7 +1,5 @@
 package main
 
-VERSION := "0.0.1"
-
 import (
 	"crypto/tls"
 	"crypto/x509"
@@ -12,6 +10,8 @@ import (
 	"net/http"
 	"os"
 )
+
+var VERSION = "0.1.0"
 
 func usage() {
 	fmt.Printf("Usage: %s https://example.org/download.tar.bz2\n", os.Args[0])
@@ -50,7 +50,7 @@ func main() {
 	if len(os.Args) < 2 {
 		usage()
 	}
-    if os.Args[1] == '-v' {
+    if os.Args[1] == "-v" {
         version()
     }
 	err := archive.Untar(download(os.Args[1]), "/", nil)
