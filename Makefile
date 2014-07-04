@@ -1,11 +1,18 @@
 DIR=$(shell pwd)
 MUSL_VERSION="1.1.3"
 
-.PHONY : container setup build install local
+.PHONY : default build_container manual container musl build push local
 
-container:
-	docker build --no-cache -t ducktape .
-	docker run --rm -t -i -v $(DIR):/opt/ducktape ducktape
+default: container
+
+build_container:
+	docker build -t ducktape meta
+
+manual: build_container
+	./meta/launch /bin/bash || true
+
+container: build_container
+	./meta/launch
 
 musl:
 	rm -rf musl.tar.gz musl-$(MUSL_VERSION)
@@ -14,11 +21,15 @@ musl:
 	cd musl-$(MUSL_VERSION) ; CFLAGS=-fno-toplevel-reorder ./configure
 	$(MAKE) -C musl-$(MUSL_VERSION) install
 
-setup:
+build: musl
 	mkdir -p gopath/{src,pkg,bin}
-
-build:
 	GOPATH=$(DIR)/gopath go get -d
-	CC=/usr/local/musl/bin/musl-gcc GOPATH=$(DIR)/gopath go build -o build/ducktape -ldflags '-extldflags "-static"'
+	CC=/usr/local/musl/bin/musl-gcc GOPATH=$(DIR)/gopath go build -o build/ducktape -ldflags '-extldflags "-static"' src
 
-local: musl setup build
+push:
+	ssh -oStrictHostKeyChecking=no git@github.com &>/dev/null || true
+	targit -a .github -c -f dock0/nsinit $$(./build/nsinit -v | awk '{print $$NF}') build/nsinit
+	targit -a .github -c -f dock0/nsinit master build/nsinit
+
+local: build push
+
