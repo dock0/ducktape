@@ -31,8 +31,8 @@ push:
 	git tag -f "$$(./build/ducktape -v)"
 	git push origin ":$$(./build/ducktape -v)"
 	git push --tags origin master
-	targit -a .github -c -f dock0/nsinit $$(./build/ducktape -v) build/ducktape
-	targit -a .github -c -f dock0/nsinit master build/ducktape
+	targit -a .github -c -f dock0/ducktape $$(./build/ducktape -v) build/ducktape
+	targit -a .github -c -f dock0/ducktape latest build/ducktape
 
 local: build push
 
