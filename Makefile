@@ -29,7 +29,7 @@ build: musl
 push:
 	ssh -oStrictHostKeyChecking=no git@github.com &>/dev/null || true
 	git add ducktape.go
-	git commit -m "$$(./build/ducktape -v)"
+	git commit -m "$$(./build/ducktape -v)" || true
 	git tag -f "$$(./build/ducktape -v)"
 	git push origin ":$$(./build/ducktape -v)"
 	git push --tags origin master
