@@ -28,8 +28,13 @@ build: musl
 
 push:
 	ssh -oStrictHostKeyChecking=no git@github.com &>/dev/null || true
-	targit -a .github -c -f dock0/nsinit $$(./build/nsinit -v | awk '{print $$NF}') build/nsinit
-	targit -a .github -c -f dock0/nsinit master build/nsinit
+	git add ducktape.go
+	git commit -m "$$(./build/ducktape -v)"
+	git tag -f "$$(./build/ducktape -v)"
+	git push origin ":$$(./build/ducktape -v)"
+	git push --tags origin master
+	targit -a .github -c -f dock0/nsinit $$(./build/ducktape -v) build/ducktape
+	targit -a .github -c -f dock0/nsinit master build/ducktape
 
 local: build push
 
