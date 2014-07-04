@@ -1,5 +1,7 @@
 package main
 
+VERSION := "0.0.1"
+
 import (
 	"crypto/tls"
 	"crypto/x509"
@@ -14,6 +16,11 @@ import (
 func usage() {
 	fmt.Printf("Usage: %s https://example.org/download.tar.bz2\n", os.Args[0])
 	os.Exit(1)
+}
+
+func version() {
+    fmt.Println(VERSION)
+    os.Exit(0)
 }
 
 func tls_config() *tls.Config {
@@ -43,6 +50,9 @@ func main() {
 	if len(os.Args) < 2 {
 		usage()
 	}
+    if os.Args[1] == '-v' {
+        version()
+    }
 	err := archive.Untar(download(os.Args[1]), "/", nil)
 	if err != nil {
 		fmt.Printf("Failed to extract -- %s\n", err)

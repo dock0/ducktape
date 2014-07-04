@@ -24,12 +24,10 @@ musl:
 build: musl
 	mkdir -p gopath/{src,pkg,bin}
 	GOPATH=$(DIR)/gopath go get -d
-	CC=/usr/local/musl/bin/musl-gcc GOPATH=$(DIR)/gopath go build -o build/ducktape -ldflags '-extldflags "-static"' src
+	CC=/usr/local/musl/bin/musl-gcc GOPATH=$(DIR)/gopath go build -o build/ducktape -ldflags '-extldflags "-static"'
 
 push:
 	ssh -oStrictHostKeyChecking=no git@github.com &>/dev/null || true
-	git add ducktape.go
-	git commit -m "$$(./build/ducktape -v)" || true
 	git tag -f "$$(./build/ducktape -v)"
 	git push origin ":$$(./build/ducktape -v)"
 	git push --tags origin master
