@@ -5,5 +5,5 @@ docker run \
     -v $SSH_AUTH_SOCK:/auth.sock \
     -e SSH_AUTH_SOCK=/auth.sock \
     -v $(pwd):/opt/ducktape \
-    -v ~/.gitconfig:/.gitconfig \
+    -v ~/.gitconfig:/root/.gitconfig \
     ducktape $1
