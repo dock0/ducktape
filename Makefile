@@ -30,7 +30,6 @@ build: musl
 push:
 	ssh -oStrictHostKeyChecking=no git@github.com &>/dev/null || true
 	git tag -f "$$(./build/ducktape -v)"
-	git push origin ":$$(./build/ducktape -v)" || true
 	git push --tags origin master
 	targit -a .github -c -f dock0/ducktape $$(./build/ducktape -v) build/ducktape
 	targit -a .github -c -f dock0/ducktape latest build/ducktape
