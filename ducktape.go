@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"github.com/dotcloud/docker/archive"
+	"github.com/docker/docker/pkg/archive"
 	"io"
 	"io/ioutil"
 	"net/http"
