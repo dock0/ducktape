@@ -1,6 +1,3 @@
-FROM dock0/arch
+FROM dock0/build
 MAINTAINER akerl <me@lesaker.org>
-RUN pacman -S --needed --noconfirm go base-devel ruby openssh
-RUN gem install --no-user-install --no-rdoc --no-ri targit
-WORKDIR /opt/ducktape
-CMD ["make", "local"]
+RUN pacman -S --needed --noconfirm go
