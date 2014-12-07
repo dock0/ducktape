@@ -24,7 +24,7 @@ musl:
 build: musl
 	mkdir -p gopath/{src,pkg,bin}
 	GOPATH=$(DIR)/gopath go get -d
-	CC=/usr/local/musl/bin/musl-gcc GOPATH=$(DIR)/gopath go build -o build/ducktape -ldflags '-extldflags "-static"'
+	GOPATH=$(DIR)/gopath CC=/usr/local/musl/bin/musl-gcc go build -o build/ducktape -ldflags "-linkmode external -extldflags -static"
 	strip build/ducktape
 
 push:
