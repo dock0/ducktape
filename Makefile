@@ -1,7 +1,6 @@
 DIR=$(shell pwd)
-MUSL_VERSION="1.1.3"
 
-.PHONY : default build_container manual container musl build push local
+.PHONY : default build_container manual container build push local
 
 default: container
 
@@ -14,17 +13,10 @@ manual: build_container
 container: build_container
 	./meta/launch
 
-musl:
-	rm -rf musl.tar.gz musl-$(MUSL_VERSION)
-	curl -o musl.tar.gz http://www.musl-libc.org/releases/musl-$(MUSL_VERSION).tar.gz
-	tar xf musl.tar.gz
-	cd musl-$(MUSL_VERSION) ; CFLAGS=-fno-toplevel-reorder ./configure
-	$(MAKE) -C musl-$(MUSL_VERSION) install
-
-build: musl
+build:
 	mkdir -p gopath/{src,pkg,bin}
 	GOPATH=$(DIR)/gopath go get -d
-	GOPATH=$(DIR)/gopath CC=/usr/local/musl/bin/musl-gcc go build -o build/ducktape -ldflags "-linkmode external -extldflags -static"
+	GOPATH=$(DIR)/gopath CC=musl-gcc go build -o build/ducktape -ldflags "-linkmode external -extldflags -static"
 	strip build/ducktape
 
 push:
