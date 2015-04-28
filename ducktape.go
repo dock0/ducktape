@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-var VERSION = "0.2.1"
+var VERSION = "0.3.0"
 
 func usage() {
 	example_url := "https://example.org/download.tar.bz2" 
