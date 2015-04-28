@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-var VERSION = "0.2.0"
+var VERSION = "0.2.1"
 
 func usage() {
 	fmt.Printf("Usage: %s https://example.org/download.tar.bz2\n", os.Args[0])
