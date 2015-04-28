@@ -16,7 +16,7 @@ var VERSION = "0.3.0"
 func usage() {
 	example_url := "https://example.org/download.tar.bz2" 
 	fmt.Printf("Usage: %s %s\n", os.Args[0], example_url)
-	fmt.Printf("Alternate usage: DUCKTAPE_URL=%s %s", example_url, os.Args[0])
+	fmt.Printf("Alternate usage: DUCKTAPE_URL=%s %s\n", example_url, os.Args[0])
 	os.Exit(1)
 }
 
