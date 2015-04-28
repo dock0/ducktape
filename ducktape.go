@@ -14,7 +14,9 @@ import (
 var VERSION = "0.2.1"
 
 func usage() {
-	fmt.Printf("Usage: %s https://example.org/download.tar.bz2\n", os.Args[0])
+	example_url := "https://example.org/download.tar.bz2" 
+	fmt.Printf("Usage: %s %s\n", os.Args[0], example_url)
+	fmt.Printf("Alternate usage: DUCKTAPE_URL=%s %s", example_url, os.Args[0])
 	os.Exit(1)
 }
 
@@ -47,15 +49,19 @@ func download(url string) io.Reader {
 }
 
 func main() {
-	if len(os.Args) < 2 {
+	url := os.Getenv("DUCKTAPE_URL")
+	if len(os.Args) > 1 {
+		if os.Args[1] == "-v" {
+			version()
+		}
+		url = os.Args[1]
+	}
+	if len(url) == 0 {
 		usage()
 	}
-	if os.Args[1] == "-v" {
-		version()
-	}
-	err := archive.Untar(download(os.Args[1]), "/", nil)
+	err := archive.Untar(download(url), "/", nil)
 	if err != nil {
 		fmt.Printf("Failed to extract -- %s\n", err)
 	}
-	fmt.Println("Successfully extracted archive")
+	fmt.Println("Successfully extracted archive\n")
 }
