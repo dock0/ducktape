@@ -11,10 +11,10 @@ import (
 	"os"
 )
 
-var VERSION = "0.3.1"
+var VERSION = "0.3.2"
 
 func usage() {
-	example_url := "https://example.org/download.tar.bz2" 
+	example_url := "https://example.org/download.tar.bz2"
 	fmt.Printf("Usage: %s %s\n", os.Args[0], example_url)
 	fmt.Printf("Alternate usage: DUCKTAPE_URL=%s %s\n", example_url, os.Args[0])
 	os.Exit(1)
@@ -62,6 +62,7 @@ func main() {
 	err := archive.Untar(download(url), "/", nil)
 	if err != nil {
 		fmt.Printf("Failed to extract -- %s\n", err)
+		os.Exit(1)
 	}
 	fmt.Println("Successfully extracted archive\n")
 }
