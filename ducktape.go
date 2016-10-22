@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 var VERSION = "0.3.2"
@@ -25,9 +26,22 @@ func version() {
 	os.Exit(0)
 }
 
+func get_path() string {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		fmt.Println("Failed to find current dir\n")
+		os.exit(1)
+	}
+	return dir
+}
+
+func get_file(path string) string {
+	return filepath.Join(get_path(), path)
+}
+
 func tls_config() *tls.Config {
 	pool := x509.NewCertPool()
-	cert, err := ioutil.ReadFile("./.cert")
+	cert, err := ioutil.ReadFile(get_file("cert"))
 	if err != nil {
 		fmt.Printf("Failed to load certificate -- %s\n", err)
 		os.Exit(1)
