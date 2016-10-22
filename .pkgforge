@@ -1,0 +1,25 @@
+name 'slacker'
+org 'amylum'
+
+source(
+  type: 'git',
+  path: '.'
+)
+
+build do
+  gopath = tmpdir(:gopath)
+  run "mkdir -p #{gopath}/{src,pkg,bin}"
+  run "go get -d", "GOPATH" => gopath
+  run 'go build -o ducktape -ldflags "-linkmode external -extldflags -static"', "GOPATH" => gopath
+  run 'strip ducktape'
+  run "cp ducktape #{releasedir}/"
+end
+
+package(
+  type: 'file',
+  path: 'ducktape'
+)
+
+test do
+  # TODO: add tests
+end

@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-docker run \
-    --rm -t -i \
-    -v $SSH_AUTH_SOCK:/auth.sock \
-    -e SSH_AUTH_SOCK=/auth.sock \
-    -v $(pwd):/opt/build \
-    -v ~/.gitconfig:/etc/gitconfig \
-    ducktape $1
