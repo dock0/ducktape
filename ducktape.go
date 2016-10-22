@@ -30,7 +30,7 @@ func get_path() string {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		fmt.Println("Failed to find current dir\n")
-		os.exit(1)
+		os.Exit(1)
 	}
 	return dir
 }
