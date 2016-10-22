@@ -1,5 +1,5 @@
 name 'ducktape'
-org 'amylum'
+org 'dock0'
 
 source(
   type: 'git',
