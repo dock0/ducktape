@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 )
 
-var VERSION = "0.3.2"
+var VERSION = "0.4.0"
 
 func usage() {
 	example_url := "https://example.org/download.tar.bz2"
