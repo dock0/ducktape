@@ -1,4 +1,2 @@
-gopath
-musl*
-build
 .github
+pkg
