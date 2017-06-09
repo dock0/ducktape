@@ -17,7 +17,12 @@ end
 
 package(
   type: 'file',
-  path: 'ducktape'
+  artifacts: [
+    {
+      source: 'ducktape',
+      name: 'ducktape'
+    }
+  ]
 )
 
 test do
