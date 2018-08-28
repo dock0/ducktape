@@ -1,7 +1,7 @@
 ducktape
 =======
 
-[![Build Status](https://img.shields.io/circleci/project/dock0/ducktape/master.svg)](https://circleci.com/gh/dock0/ducktape)
+[![Build Status](https://img.shields.io/travis/com/dock0/ducktape.svg)](https://travis-ci.com/dock0/ducktape)
 [![GitHub release](https://img.shields.io/github/release/dock0/ducktape.svg)](https://github.com/dock0/ducktape/releases)
 [![MIT Licensed](http://img.shields.io/badge/license-MIT-green.svg)](https://tldrlegal.com/license/mit-license)
 
