@@ -1,7 +1,7 @@
-Prospectus.extra_dep('file', 'prospectus_circleci')
+Prospectus.extra_dep('file', 'prospectus_travis')
 
 item do
   noop
 
-  extend ProspectusCircleci::Build.new('dock0/ducktape')
+  extend ProspectusTravis::Build.new('dock0/ducktape')
 end
