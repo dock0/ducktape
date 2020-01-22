@@ -13,16 +13,12 @@ import (
 	"github.com/mholt/archiver/v3"
 )
 
-var VERSION = "0.5.0"
+var version = "0.5.0"
 
 func usage() {
 	exampleURL := "https://example.org/download.tar.bz2"
 	fmt.Printf("Usage: %s %s\n", os.Args[0], exampleURL)
 	fmt.Printf("Alternate usage: DUCKTAPE_URL=%s %s\n", exampleURL, os.Args[0])
-}
-
-func version() {
-	fmt.Println(VERSION)
 }
 
 func getDirPath() (string, error) {
@@ -117,7 +113,7 @@ func main() {
 	url := os.Getenv("DUCKTAPE_URL")
 	if len(os.Args) > 1 {
 		if os.Args[1] == "-v" {
-			version()
+			fmt.Println(version)
 			return
 		}
 		url = os.Args[1]
