@@ -6,5 +6,5 @@ item do
   noop
 
   extend ProspectusGolang::Deps.new
-  extend ProspectusTravis::Build.new('akerl/speculate')
+  extend ProspectusTravis::Build.new('dock0/ducktape')
 end

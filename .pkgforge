@@ -15,12 +15,8 @@ package(
   type: 'file',
   artifacts: [
     {
-      source: 'bin/speculate_darwin',
-      name: 'speculate_darwin'
-    },
-    {
-      source: 'bin/speculate_linux',
-      name: 'speculate_linux'
+      source: 'bin/ducktape_linux',
+      name: 'ducktape'
     }
   ]
 )

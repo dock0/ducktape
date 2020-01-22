@@ -12,7 +12,7 @@ Minimal bootstrapping script for downloading and extracting a root tarball
 To bootstrap a system using ducktape, do the following:
 
 1. Put the `ducktape` binary on the system
-2. Put a `.cert` file in the same directory as the binary
+2. Put a `cert` file in the same directory as the binary
 3. Run `./ducktape https://example.org/root.tar.bz2`
 
 It supports uncompressed, gzipped, and bzipped archives.
