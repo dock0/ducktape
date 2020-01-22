@@ -22,9 +22,9 @@ To use this for a Docker container, start your Dockerfile with the following:
 ```
 FROM scratch
 MAINTAINER {you}
-ADD ducktape /.ducktape
-ADD cert /.cert
-RUN ["/.ducktape", "https://example.org/path/to/root.tar.bz2"]
+ADD ducktape /ducktape
+ADD cert /cert
+RUN ["/ducktape", "https://example.org/path/to/root.tar.bz2"]
 ```
 
 ## License
