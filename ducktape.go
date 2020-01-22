@@ -4,62 +4,113 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"github.com/docker/docker/pkg/archive"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/mholt/archiver/v3"
 )
 
-var VERSION = "0.4.0"
+var VERSION = "0.5.0"
 
 func usage() {
 	example_url := "https://example.org/download.tar.bz2"
 	fmt.Printf("Usage: %s %s\n", os.Args[0], example_url)
 	fmt.Printf("Alternate usage: DUCKTAPE_URL=%s %s\n", example_url, os.Args[0])
-	os.Exit(1)
 }
 
 func version() {
 	fmt.Println(VERSION)
-	os.Exit(0)
 }
 
-func get_path() string {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+func get_dir_path() (string, error) {
+	return os.Executable()
+}
+
+func get_file_path(name string) (string, error) {
+	dir_path, err := get_dir_path()
 	if err != nil {
-		fmt.Println("Failed to find current dir\n")
-		os.Exit(1)
+		return "", err
 	}
-	return dir
+	return filepath.Join(dir_path, name), nil
 }
 
-func get_file(path string) string {
-	return filepath.Join(get_path(), path)
+func get_tmp_file() (string, error) {
+	dir_path, err := get_dir_path()
+	if err != nil {
+		return "", err
+	}
+	file, err := ioutil.TempFile(dir_path, "ducktape")
+	if err != nil {
+		return "", err
+	}
+	file.Close()
+	return file.Name(), nil
 }
 
-func tls_config() *tls.Config {
+func get_tls_config() (tls.Config, error) {
+	cert_file, err := get_file_path("cert")
+	if err != nil {
+		return tls.Config{}, err
+	}
+	cert, err := ioutil.ReadFile(cert_file)
+	if err != nil {
+		return tls.Config{}, err
+	}
 	pool := x509.NewCertPool()
-	cert, err := ioutil.ReadFile(get_file("cert"))
-	if err != nil {
-		fmt.Printf("Failed to load certificate -- %s\n", err)
-		os.Exit(1)
-	}
 	pool.AppendCertsFromPEM(cert)
-	return &tls.Config{RootCAs: pool}
+	return tls.Config{RootCAs: pool}, nil
 }
 
-func download(url string) io.Reader {
-	transport := &http.Transport{TLSClientConfig: tls_config()}
-	client := &http.Client{Transport: transport}
+func get_tls_client() (http.Client, error) {
+	tls_config, err := get_tls_config()
+	if err != nil {
+		return http.Client{}, err
+	}
+	transport := http.Transport{TLSClientConfig: &tls_config}
+	return http.Client{Transport: &transport}, nil
+}
+
+func download(path, url string) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	client, err := get_tls_client()
+	if err != nil {
+		return err
+	}
 	response, err := client.Get(url)
 	if err != nil {
-		fmt.Printf("Failed to download %s -- %s\n", url, err)
-		os.Exit(1)
+		return err
 	}
-	fmt.Printf("Downloaded %s\n", url)
-	return response.Body
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed http response: %s", response.Status)
+	}
+
+	_, err = io.Copy(file, response.Body)
+	return err
+}
+
+func execute(url string) error {
+	path, err := get_tmp_file()
+	if err != nil {
+		return err
+	}
+	defer os.Remove(path)
+
+	err = download(path, url)
+	if err != nil {
+		return err
+	}
+
+	return archiver.Unarchive(path, "/")
 }
 
 func main() {
@@ -67,16 +118,18 @@ func main() {
 	if len(os.Args) > 1 {
 		if os.Args[1] == "-v" {
 			version()
+			return
 		}
 		url = os.Args[1]
 	}
 	if len(url) == 0 {
 		usage()
-	}
-	err := archive.Untar(download(url), "/", nil)
-	if err != nil {
-		fmt.Printf("Failed to extract -- %s\n", err)
 		os.Exit(1)
 	}
-	fmt.Println("Successfully extracted archive\n")
+
+	err := execute(url)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
