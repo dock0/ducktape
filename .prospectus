@@ -1,7 +1,10 @@
 Prospectus.extra_dep('file', 'prospectus_travis')
+Prospectus.extra_dep('file', 'prospectus_golang')
+require 'json'
 
 item do
   noop
 
-  extend ProspectusTravis::Build.new('dock0/ducktape')
+  extend ProspectusGolang::Deps.new
+  extend ProspectusTravis::Build.new('akerl/speculate')
 end

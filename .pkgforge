@@ -1,5 +1,5 @@
-name 'ducktape'
-org 'dock0'
+name 'speculate'
+org 'akerl'
 
 source(
   type: 'git',
@@ -7,20 +7,20 @@ source(
 )
 
 build do
-  gopath = tmpdir(:gopath)
-  run "mkdir -p #{gopath}/{src,pkg,bin}"
-  run "go get -d", "GOPATH" => gopath
-  run 'go build -o ducktape -ldflags "-linkmode external -extldflags -static"', "GOPATH" => gopath
-  run 'strip ducktape'
-  run "cp ducktape #{releasedir}/"
+  run 'make local'
+  cp 'bin'
 end
 
 package(
   type: 'file',
   artifacts: [
     {
-      source: 'ducktape',
-      name: 'ducktape'
+      source: 'bin/speculate_darwin',
+      name: 'speculate_darwin'
+    },
+    {
+      source: 'bin/speculate_linux',
+      name: 'speculate_linux'
     }
   ]
 )
