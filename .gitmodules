@@ -1,3 +1,0 @@
-[submodule "meta"]
-	path = meta
-	url = https://github.com/akerl/pkgforge-golang-helper
