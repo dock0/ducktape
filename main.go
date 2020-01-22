@@ -16,33 +16,33 @@ import (
 var VERSION = "0.5.0"
 
 func usage() {
-	example_url := "https://example.org/download.tar.bz2"
-	fmt.Printf("Usage: %s %s\n", os.Args[0], example_url)
-	fmt.Printf("Alternate usage: DUCKTAPE_URL=%s %s\n", example_url, os.Args[0])
+	exampleURL := "https://example.org/download.tar.bz2"
+	fmt.Printf("Usage: %s %s\n", os.Args[0], exampleURL)
+	fmt.Printf("Alternate usage: DUCKTAPE_URL=%s %s\n", exampleURL, os.Args[0])
 }
 
 func version() {
 	fmt.Println(VERSION)
 }
 
-func get_dir_path() (string, error) {
+func getDirPath() (string, error) {
 	return os.Executable()
 }
 
-func get_file_path(name string) (string, error) {
-	dir_path, err := get_dir_path()
+func getFilePath(name string) (string, error) {
+	dirPath, err := getDirPath()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(dir_path, name), nil
+	return filepath.Join(dirPath, name), nil
 }
 
-func get_tmp_file() (string, error) {
-	dir_path, err := get_dir_path()
+func getTmpFile() (string, error) {
+	dirPath, err := getDirPath()
 	if err != nil {
 		return "", err
 	}
-	file, err := ioutil.TempFile(dir_path, "ducktape")
+	file, err := ioutil.TempFile(dirPath, "ducktape")
 	if err != nil {
 		return "", err
 	}
@@ -50,12 +50,12 @@ func get_tmp_file() (string, error) {
 	return file.Name(), nil
 }
 
-func get_tls_config() (tls.Config, error) {
-	cert_file, err := get_file_path("cert")
+func getTLSConfig() (tls.Config, error) {
+	certFile, err := getFilePath("cert")
 	if err != nil {
 		return tls.Config{}, err
 	}
-	cert, err := ioutil.ReadFile(cert_file)
+	cert, err := ioutil.ReadFile(certFile)
 	if err != nil {
 		return tls.Config{}, err
 	}
@@ -64,12 +64,12 @@ func get_tls_config() (tls.Config, error) {
 	return tls.Config{RootCAs: pool}, nil
 }
 
-func get_tls_client() (http.Client, error) {
-	tls_config, err := get_tls_config()
+func getTLSClient() (http.Client, error) {
+	tlsConfig, err := getTLSConfig()
 	if err != nil {
 		return http.Client{}, err
 	}
-	transport := http.Transport{TLSClientConfig: &tls_config}
+	transport := http.Transport{TLSClientConfig: &tlsConfig}
 	return http.Client{Transport: &transport}, nil
 }
 
@@ -80,7 +80,7 @@ func download(path, url string) error {
 	}
 	defer file.Close()
 
-	client, err := get_tls_client()
+	client, err := getTLSClient()
 	if err != nil {
 		return err
 	}
@@ -99,7 +99,7 @@ func download(path, url string) error {
 }
 
 func execute(url string) error {
-	path, err := get_tmp_file()
+	path, err := getTmpFile()
 	if err != nil {
 		return err
 	}
