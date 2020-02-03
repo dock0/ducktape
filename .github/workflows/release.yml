@@ -29,8 +29,8 @@ jobs:
       if: failure()
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: akerl/github-action-slack-notify-build@v1.1.0
-        with:
-          channel: builds
-          status: failed
-          color: danger
+      uses: akerl/github-action-slack-notify-build@v1.1.0
+      with:
+        channel: builds
+        status: failed
+        color: danger
