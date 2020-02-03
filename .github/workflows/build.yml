@@ -13,6 +13,9 @@ jobs:
       run: git submodule update --init --recursive
     - name: Make
       run: make
+    - name: Release
+      if: startsWith(github.tags, 'refs/tags/')
+      run: make release
     - name: Notify on success
       if: success()
       env:
