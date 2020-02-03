@@ -11,6 +11,8 @@ jobs:
       uses: akerl/action-checkout@v2.0.0
     - name: Submodules
       run: git submodule update --init --recursive
+    - name: Fail
+      run: /bin/false
     - name: Make
       run: make
     - name: Notify on success
