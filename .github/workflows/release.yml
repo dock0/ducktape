@@ -22,7 +22,7 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: akerl/github-action-slack-notify-build@v1.1.0
       with:
-        channel: builds
+        channel_id: ${{ secrets.SLACK_BOT_CHANNEL }}
         status: success
         color: good
     - name: Notify on failure
@@ -31,6 +31,6 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: akerl/github-action-slack-notify-build@v1.1.0
       with:
-        channel: builds
+        channel_id: ${{ secrets.SLACK_BOT_CHANNEL }}
         status: failed
         color: danger
