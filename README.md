@@ -1,9 +1,9 @@
 ducktape
 =======
 
-[![Build Status](https://img.shields.io/travis/com/dock0/ducktape.svg)](https://travis-ci.com/dock0/ducktape)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dock0/ducktape/Build)](https://github.com/dock0/ducktape/actions))
 [![GitHub release](https://img.shields.io/github/release/dock0/ducktape.svg)](https://github.com/dock0/ducktape/releases)
-[![MIT Licensed](http://img.shields.io/badge/license-MIT-green.svg)](https://tldrlegal.com/license/mit-license)
+[![License](https://img.shields.io/github/license/dock0/ducktape)](https://github.com/dock0/ducktape/blob/master/LICENSE)
 
 Minimal bootstrapping script for downloading and extracting a root tarball
 
