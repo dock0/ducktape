@@ -1,5 +1,5 @@
-name 'speculate'
-org 'akerl'
+name 'ducktape'
+org 'dock0'
 
 source(
   type: 'git',
