@@ -13,10 +13,8 @@ jobs:
       run: git submodule update --init --recursive
     - name: Make
       run: make
-    - name: Debug
-      run: echo ${{ github.ref }}
     - name: Release
-      if: startsWith(github.tags, 'refs/tags/')
+      if: startsWith(github.ref, 'refs/tags/')
       run: make release
     - name: Notify on success
       if: success()
