@@ -13,3 +13,4 @@ jobs:
       run: git submodule update --init --recursive
     - name: Make
       run: make
+

@@ -8,8 +8,11 @@ env:
 jobs:
   release:
     name: Release
-    needs: build
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: akerl/action-checkout@v2.0.0
+    - name: Submodules
+      run: git submodule update --init --recursive
     - name: Make
       run: make release
