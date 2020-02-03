@@ -3,7 +3,7 @@ on: [pull_request, push]
 env:
   PKGFORGE_STATEFILE: /tmp/pkgforge
 jobs:
-  test:
+  build:
     name: Build
     runs-on: ubuntu-latest
     steps:
