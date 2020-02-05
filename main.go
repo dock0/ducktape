@@ -45,7 +45,7 @@ func getTmpFile(extension string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pattern = fmt.Sprintf("ducktape-*%s", extension)
+	pattern := fmt.Sprintf("ducktape-*%s", extension)
 	file, err := ioutil.TempFile(dirPath, pattern)
 	if err != nil {
 		return "", err
