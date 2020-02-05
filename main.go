@@ -40,12 +40,13 @@ func getFilePath(name string) (string, error) {
 	return filepath.Join(dirPath, name), nil
 }
 
-func getTmpFile() (string, error) {
+func getTmpFile(extension string) (string, error) {
 	dirPath, err := getDirPath()
 	if err != nil {
 		return "", err
 	}
-	file, err := ioutil.TempFile(dirPath, "ducktape")
+	pattern = fmt.Sprintf("ducktape-*%s", extension)
+	file, err := ioutil.TempFile(dirPath, pattern)
 	if err != nil {
 		return "", err
 	}
@@ -103,7 +104,7 @@ func download(path, url string) error {
 }
 
 func execute(url string) error {
-	path, err := getTmpFile()
+	path, err := getTmpFile(".tar.bz2")
 	if err != nil {
 		return err
 	}
