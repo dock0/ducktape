@@ -7,7 +7,7 @@ source(
 )
 
 build do
-  run 'make local'
+  run 'make local', 'CGO_ENABLED' => '0'
   cp 'bin'
 end
 
