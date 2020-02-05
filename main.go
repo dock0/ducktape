@@ -10,10 +10,13 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/akerl/timber/v2/log"
 	"github.com/mholt/archiver/v3"
+
+	"github.com/dock0/ducktape/cmd"
 )
 
-var version = "0.5.0"
+var logger = log.NewLogger("ducktape")
 
 func usage() {
 	exampleURL := "https://example.org/download.tar.bz2"
@@ -22,7 +25,11 @@ func usage() {
 }
 
 func getDirPath() (string, error) {
-	return os.Executable()
+	binPath, err := os.Executable()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Dir(binPath), nil
 }
 
 func getFilePath(name string) (string, error) {
@@ -80,6 +87,7 @@ func download(path, url string) error {
 	if err != nil {
 		return err
 	}
+	logger.InfoMsgf("Downloading from %s", url)
 	response, err := client.Get(url)
 	if err != nil {
 		return err
@@ -99,6 +107,7 @@ func execute(url string) error {
 	if err != nil {
 		return err
 	}
+	logger.InfoMsgf("Created tmp file %s", path)
 	defer os.Remove(path)
 
 	err = download(path, url)
@@ -106,6 +115,7 @@ func execute(url string) error {
 		return err
 	}
 
+	logger.InfoMsgf("Beginning unarchive")
 	return archiver.Unarchive(path, "/")
 }
 
@@ -113,7 +123,7 @@ func main() {
 	url := os.Getenv("DUCKTAPE_URL")
 	if len(os.Args) > 1 {
 		if os.Args[1] == "-v" {
-			fmt.Println(version)
+			fmt.Println(cmd.Version)
 			return
 		}
 		url = os.Args[1]
