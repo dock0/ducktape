@@ -20,6 +20,11 @@ jobs:
       run: make release
       env:
         GITHUB_TOKEN: ${{ github.token }}
+    - name: Store
+      uses: akerl/upload-artifact@v1.0.0
+      with:
+        name: pkg
+        path: pkg
     - name: Notify on success
       if: success()
       env:
