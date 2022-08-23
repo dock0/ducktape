@@ -1,48 +1,45 @@
 name: Build
-on: [pull_request, push]
+on:
+  pull_request:
+  push:
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+    env:
+      PKGFORGE_STATEFILE: /tmp/pkgforge
     steps:
     - name: Checkout
-      uses: akerl/action-checkout@v2.0.0
-    - name: Submodules
-      run: git submodule update --init --recursive
-    - name: Registry auth
-      run: docker login docker.pkg.github.com -u nobody -p ${{ github.token }}
-    - name: Make
-      env:
-        PKGFORGE_STATEFILE: /tmp/pkgforge
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Build
       run: make
     - name: Release
-      env:
-        PKGFORGE_STATEFILE: /tmp/pkgforge
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       if: startsWith(github.ref, 'refs/tags/')
       run: make release
-    - name: Store
-      uses: akerl/upload-artifact@v1.0.0
-      with:
-        name: pkg
-        path: pkg
-    - name: Notify on success
-      if: success()
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: akerl/github-action-slack-notify-build@v1.1.1
-      with:
-        channel_id: ${{ secrets.SLACK_BOT_CHANNEL }}
-        status: success
-        color: good
-    - name: Notify on failure
-      if: failure()
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Post to a Slack channel
+      if: ${{ failure() }}
+      uses: slackapi/slack-github-action@v1.18.0
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: akerl/github-action-slack-notify-build@v1.1.1
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       with:
-        channel_id: ${{ secrets.SLACK_BOT_CHANNEL }}
-        status: failed
-        color: danger
-
+        payload: |
+          {
+            "text": "Build result: ${{ job.status }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Build result: ${{ job.status }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                }
+              }
+            ]
+          }
