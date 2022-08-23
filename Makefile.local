@@ -1,2 +1,2 @@
 PACKAGE = ducktape
-OSLIST = linux
+OSARCHLIST = linux/amd64 linux/arm linux/arm64

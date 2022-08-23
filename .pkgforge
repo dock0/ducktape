@@ -13,12 +13,14 @@ end
 
 package(
   type: 'file',
-  artifacts: [
+  artifacts: %w(linux/amd64 linux/arm linux/arm64).map do |x|
+    os, arch = x.split '/'
+    filename = "#{@forge.name}_#{os}_#{arch}"
     {
-      source: 'bin/ducktape_linux',
-      name: 'ducktape'
+      source: "bin/#{filename}",
+      name: filename
     }
-  ]
+  end
 )
 
 test do
