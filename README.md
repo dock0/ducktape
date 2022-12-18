@@ -1,7 +1,7 @@
 ducktape
 =======
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dock0/ducktape/build.yaml?branch=main)](https://github.com/dock0/ducktape/actions))
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dock0/ducktape/build.yml?branch=main)](https://github.com/dock0/ducktape/actions))
 [![GitHub release](https://img.shields.io/github/release/dock0/ducktape.svg)](https://github.com/dock0/ducktape/releases)
 [![License](https://img.shields.io/github/license/dock0/ducktape)](https://github.com/dock0/ducktape/blob/master/LICENSE)
 
