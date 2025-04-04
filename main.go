@@ -121,12 +121,13 @@ func execute(url string) error {
 	if err != nil {
 		return err
 	}
+	truth := true
 	return archives.Extract(
 		file,
 		"/",
-		&archives.ExtractOptions{
+		archives.ExtractOptions{
 			Extension:           ".tar.bz2",
-			PreservePermissions: true,
+			PreservePermissions: &truth,
 			PreserveOwnership:   true,
 		},
 	)
