@@ -117,7 +117,10 @@ func execute(url string) error {
 	}
 
 	logger.InfoMsgf("Beginning unarchive")
-	file := os.Open(path)
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
 	return archives.Extract(
 		file,
 		"/",
