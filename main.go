@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
@@ -11,7 +12,7 @@ import (
 	"path/filepath"
 
 	"github.com/akerl/timber/v2/log"
-	"github.com/jaredallard/archives"
+	"github.com/codeclysm/extract/v4"
 
 	"github.com/dock0/ducktape/cmd"
 )
@@ -121,16 +122,7 @@ func execute(url string) error {
 	if err != nil {
 		return err
 	}
-	truth := true
-	return archives.Extract(
-		file,
-		"/",
-		archives.ExtractOptions{
-			Extension:           ".tar.bz2",
-			PreservePermissions: &truth,
-			PreserveOwnership:   true,
-		},
-	)
+	return extract.Archive(context.TODO, file, "/", nil)
 }
 
 func main() {
