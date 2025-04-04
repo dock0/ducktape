@@ -122,7 +122,7 @@ func execute(url string) error {
 	if err != nil {
 		return err
 	}
-	return extract.Archive(context.TODO, file, "/", nil)
+	return extract.Archive(context.TODO(), file, "/", nil)
 }
 
 func main() {
