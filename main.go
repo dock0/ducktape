@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 
 	"github.com/akerl/timber/v2/log"
-	"github.com/mholt/archiver/v3"
+	"github.com/jaredallard/archives"
 
 	"github.com/dock0/ducktape/cmd"
 )
@@ -117,7 +117,16 @@ func execute(url string) error {
 	}
 
 	logger.InfoMsgf("Beginning unarchive")
-	return archiver.Unarchive(path, "/")
+	file := os.Open(path)
+	return archives.Extract(
+		file,
+		"/",
+		&archives.ExtractOptions{
+			Extension:           ".tar.bz2",
+			PreservePermissions: true,
+			PreserveOwnership:   true,
+		},
+	)
 }
 
 func main() {
