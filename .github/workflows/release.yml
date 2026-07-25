@@ -1,0 +1,21 @@
+---
+name: Release
+'on':
+  push:
+    tags:
+    - "**"
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      PKGFORGE_STATEFILE: /tmp/pkgforge
+    steps:
+    - name: Run base CI
+      uses: akerl/.github/actions/base-pkgforge@main
+    - name: Release
+      run: make release
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
